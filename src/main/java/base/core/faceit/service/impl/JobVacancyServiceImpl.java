@@ -34,4 +34,9 @@ public class JobVacancyServiceImpl implements JobVacancyService {
     public Set<String> findAllSlug() {
         return jobVacancyRepository.findAllSlug();
     }
+
+    @Override
+    public List<JobVacancy> findTopByCreatedAt() {
+        return jobVacancyRepository.findTopByCreatedAt();
+    }
 }

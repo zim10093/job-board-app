@@ -52,9 +52,7 @@ public class JobVacancyController {
 
     @GetMapping("/top10")
     public List<JobVacancyResponseDto> getTopTen() {
-        Sort sort = Sort.by(sortUtil.getOrders("createdAt"));
-        PageRequest pageRequest = PageRequest.of(0, 10, sort);
-        return jobVacancyService.findAll(pageRequest)
+        return jobVacancyService.findTopByCreatedAt()
                 .stream()
                 .map(jobVacancyToResponseDtoMapper::toDto)
                 .collect(Collectors.toList());

@@ -14,4 +14,6 @@ public interface JobVacancyService {
     List<Statistic> getStatisticByLocation();
 
     Set<String> findAllSlug();
+
+    List<JobVacancy> findTopByCreatedAt();
 }
