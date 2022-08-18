@@ -10,5 +10,4 @@ public interface JobTypeRepository extends JpaRepository<JobType, Long> {
 
     Set<JobType> findByTitleIn(Iterable<String> names);
 
-    JobType findByTitle(String title);
 }

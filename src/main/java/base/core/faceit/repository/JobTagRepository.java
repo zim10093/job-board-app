@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface JobTagRepository extends JpaRepository<JobTag, Long> {
     Set<JobTag> findByTitleIn(Iterable<String> names);
 
-    JobTag findByTitle(String title);
 }
