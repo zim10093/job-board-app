@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SyncExternalJobService {
-    private static final int NUMBERS_OF_PAGES = 1;
+    private static final int NUMBERS_OF_PAGES = 5;
     private static final String API_URL = "https://www.arbeitnow.com/api/job-board-api";
     private final Dto2ModelMapper<JobApiResponseDto, JobVacancy> dtoJobApiToModelMapper;
     private final JobVacancyService jobVacancyService;
