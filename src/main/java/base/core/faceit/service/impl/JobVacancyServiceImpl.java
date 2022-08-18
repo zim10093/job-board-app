@@ -5,6 +5,7 @@ import base.core.faceit.model.Statistic;
 import base.core.faceit.repository.JobVacancyRepository;
 import base.core.faceit.service.JobVacancyService;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,10 @@ public class JobVacancyServiceImpl implements JobVacancyService {
     @Override
     public List<Statistic> getStatisticByLocation() {
         return jobVacancyRepository.getStatisticByLocation();
+    }
+
+    @Override
+    public Set<String> findAllSlug() {
+        return jobVacancyRepository.findAllSlug();
     }
 }
