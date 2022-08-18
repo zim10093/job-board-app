@@ -14,7 +14,7 @@ public class SortUtil {
 
     public List<Sort.Order> getOrders(String sortBy) {
         List<Sort.Order> orders = new ArrayList<>();
-        if (sortBy.contains(DIRECTION_SPLITERATOR)) {
+        if (sortBy.contains(DIRECTION_SPLITERATOR) || sortBy.contains(ORDER_SPLITERATOR)) {
             String[] sortingFields = sortBy.split(ORDER_SPLITERATOR);
             for (String field : sortingFields) {
                 Sort.Order order;
