@@ -23,7 +23,7 @@ public class JobVacancy {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Company company;
     private String title;
-    @Column(columnDefinition = "VARCHAR(10240)")
+    @Column(columnDefinition = "VARCHAR(20480)")
     private String description;
     private boolean remote;
     private String url;
