@@ -20,9 +20,11 @@ public interface JobVacancyRepository extends JpaRepository<JobVacancy, Long> {
     List<Statistic> getStatisticByLocation();
 
     @Query("SELECT j.slug FROM JobVacancy AS j")
-    Set<String> findAllSlug();
+    Set<String> findAllSlugIn(Iterable<String> slugs);
 
-    @Query(value = "SELECT * FROM job_vacancies ORDER BY created_at "
-            + "DESC LIMIT 10;", nativeQuery = true)
+    @Query(value = "SELECT * FROM job_vacancies ORDER BY created_at DESC LIMIT 10;",
+            nativeQuery = true)
     List<JobVacancy> findTopByCreatedAt();
+
+    Long countJobVacanciesBySlugIn(Iterable<String> slugs);
 }
