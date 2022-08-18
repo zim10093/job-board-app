@@ -5,7 +5,6 @@ import base.core.faceit.model.JobVacancy;
 import base.core.faceit.model.Statistic;
 import base.core.faceit.model.dto.response.JobVacancyResponseDto;
 import base.core.faceit.service.JobVacancyService;
-import base.core.faceit.service.SyncExternalJobService;
 import base.core.faceit.util.SortUtil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +23,6 @@ public class JobVacancyController {
     private final Model2DtoMapper<JobVacancyResponseDto, JobVacancy> jobVacancyToResponseDtoMapper;
     private final JobVacancyService jobVacancyService;
     private final SortUtil sortUtil;
-    private final SyncExternalJobService syncExternalJobService;
 
     @GetMapping
     public List<JobVacancyResponseDto> getAll(
@@ -37,12 +35,6 @@ public class JobVacancyController {
                 .stream()
                 .map(jobVacancyToResponseDtoMapper::toDto)
                 .collect(Collectors.toList());
-    }
-
-    @GetMapping("/update")
-    public String update() {
-        syncExternalJobService.syncExternalJobVacancy();
-        return "Update done";
     }
 
     @GetMapping("/statistic")
