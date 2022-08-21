@@ -2,7 +2,6 @@ package base.core.faceit.model;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,18 +19,18 @@ import lombok.Setter;
 public class JobVacancy {
     @Id
     private String slug;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
     private String title;
-    @Column(columnDefinition = "VARCHAR(20480)")
+    @Column(columnDefinition = "VARCHAR(102400)")
     private String description;
     private boolean remote;
     private String url;
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     private Set<JobTag> jobTags;
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     private Set<JobType> jobTypes;
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Location location;
     private LocalDateTime createdAt;
 }

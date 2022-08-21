@@ -16,6 +16,4 @@ public interface JobVacancyService {
     Set<String> findAllSlugIn(Iterable<String> slugs);
 
     List<JobVacancy> findTopByCreatedAt();
-
-    Long countJobVacanciesBySlugIn(Iterable<String> slugs);
 }

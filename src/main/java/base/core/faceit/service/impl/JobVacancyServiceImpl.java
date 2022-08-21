@@ -39,9 +39,4 @@ public class JobVacancyServiceImpl implements JobVacancyService {
     public List<JobVacancy> findTopByCreatedAt() {
         return jobVacancyRepository.findTopByCreatedAt();
     }
-
-    @Override
-    public Long countJobVacanciesBySlugIn(Iterable<String> slugs) {
-        return jobVacancyRepository.countJobVacanciesBySlugIn(slugs);
-    }
 }

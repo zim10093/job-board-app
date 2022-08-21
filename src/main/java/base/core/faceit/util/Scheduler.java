@@ -1,5 +1,6 @@
 package base.core.faceit.util;
 
+import base.core.faceit.exception.SyncException;
 import base.core.faceit.service.SyncExternalJobService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Scheduler {
     private final SyncExternalJobService syncExternalJobService;
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
     {
         executorService = Executors.newSingleThreadExecutor();
@@ -21,6 +22,10 @@ public class Scheduler {
     @PostConstruct
     @Scheduled(cron = "25 * * * * ?")
     public void startSync() {
-        executorService.submit(syncExternalJobService);
+        try {
+            executorService.submit(syncExternalJobService);
+        } catch (Exception e) {
+            throw new SyncException("Can`t sync jobs", e);
+        }
     }
 }

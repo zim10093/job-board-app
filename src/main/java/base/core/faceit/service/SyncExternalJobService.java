@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SyncExternalJobService implements Callable<Boolean> {
-    private static final int NUMBERS_OF_PAGES = 5;
+    private static final int NUMBERS_OF_PAGES = 10;
+    private static final int SLEEP_TIME_MS = 10000;
     private static final String API_URL = "https://www.arbeitnow.com/api/job-board-api";
     private final Dto2ModelMapper<JobApiResponseDto, JobVacancy> dtoJobApiToModelMapper;
     private final JobVacancyService jobVacancyService;
@@ -33,34 +34,26 @@ public class SyncExternalJobService implements Callable<Boolean> {
             dataApiResponseDto = httpClient.get(currentUrl,
                             DataApiResponseDto.class);
             currentUrl = dataApiResponseDto.getLinks().getNext();
-            jobVacancies = dataApiResponseDto.getData()
+
+            List<String> externalSlugs = dataApiResponseDto.getData()
                     .stream()
-                    .map(dtoJobApiToModelMapper::toModel)
+                    .map(JobApiResponseDto::getSlug)
                     .collect(Collectors.toList());
-            long numberOfExistingJobs = jobVacancyService.countJobVacanciesBySlugIn(jobVacancies
-                    .stream()
-                    .map(JobVacancy::getSlug)
-                    .collect(Collectors.toList()));
-            if (numberOfExistingJobs == 100) {
+            Set<String> internalSlugs = jobVacancyService.findAllSlugIn(externalSlugs);
+            externalSlugs.removeAll(internalSlugs);
+
+            if (externalSlugs.isEmpty()) {
                 return true;
             }
-            if (0 == numberOfExistingJobs) {
-                jobVacancyService.saveAll(jobVacancies);
-            } else {
-                jobVacancyService.saveAll(filterNewJobVacancy(jobVacancies));
-            }
-            Thread.sleep(5000);
+
+            jobVacancies = dataApiResponseDto.getData()
+                    .stream()
+                    .filter(e -> externalSlugs.contains(e.getSlug()))
+                    .map(dtoJobApiToModelMapper::toModel)
+                    .collect(Collectors.toList());
+            jobVacancyService.saveAll(jobVacancies);
+            Thread.sleep(SLEEP_TIME_MS);
         }
         return true;
-    }
-
-    private List<JobVacancy> filterNewJobVacancy(List<JobVacancy> external) {
-        Set<String> internalJobsSlug = jobVacancyService.findAllSlugIn(external
-                .stream()
-                .map(JobVacancy::getSlug)
-                .collect(Collectors.toList()));
-        return external.stream()
-                .filter(e -> !internalJobsSlug.contains(e.getSlug()))
-                .collect(Collectors.toList());
     }
 }

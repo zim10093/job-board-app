@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,12 +20,10 @@ public interface JobVacancyRepository extends JpaRepository<JobVacancy, Long> {
             + "COUNT(j.location) )  FROM JobVacancy AS j  GROUP BY j.location.name")
     List<Statistic> getStatisticByLocation();
 
-    @Query("SELECT j.slug FROM JobVacancy AS j")
-    Set<String> findAllSlugIn(Iterable<String> slugs);
+    @Query("SELECT j.slug FROM JobVacancy AS j WHERE j.slug IN :slugs")
+    Set<String> findAllSlugIn(@Param("slugs") Iterable<String> slugs);
 
     @Query(value = "SELECT * FROM job_vacancies ORDER BY created_at DESC LIMIT 10;",
             nativeQuery = true)
     List<JobVacancy> findTopByCreatedAt();
-
-    Long countJobVacanciesBySlugIn(Iterable<String> slugs);
 }
