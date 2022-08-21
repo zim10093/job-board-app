@@ -86,9 +86,9 @@ class JobApiResponseDto2ModelMapperTest {
         Assertions.assertFalse(jobVacancy.isRemote());
         Assertions.assertEquals(URL, jobVacancy.getUrl());
         Assertions.assertEquals(TAGS, jobVacancy.getJobTags().stream()
-                .map(JobTag::getTitle).collect(Collectors.joining()));
+                .map(JobTag::getTitle).collect(Collectors.joining(",")));
         Assertions.assertEquals(JOB_TYPES, jobVacancy.getJobTypes().stream()
-                .map(JobType::getTitle).collect(Collectors.joining()));
+                .map(JobType::getTitle).collect(Collectors.joining(",")));
         Assertions.assertEquals(LOCATION, jobVacancy.getLocation().getName());
     }
 
@@ -114,9 +114,9 @@ class JobApiResponseDto2ModelMapperTest {
         Assertions.assertFalse(jobVacancy.isRemote());
         Assertions.assertEquals(URL, jobVacancy.getUrl());
         Assertions.assertEquals(TAGS, jobVacancy.getJobTags().stream()
-                .map(JobTag::getTitle).collect(Collectors.joining()));
+                .map(JobTag::getTitle).collect(Collectors.joining(",")));
         Assertions.assertEquals(JOB_TYPES, jobVacancy.getJobTypes().stream()
-                .map(JobType::getTitle).collect(Collectors.joining()));
+                .map(JobType::getTitle).collect(Collectors.joining(",")));
         Assertions.assertEquals(LOCATION, jobVacancy.getLocation().getName());
     }
 
