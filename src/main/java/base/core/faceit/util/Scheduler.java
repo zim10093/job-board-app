@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Scheduler {
     private final SyncExternalJobService syncExternalJobService;
-    private final ExecutorService executorService;
+    private ExecutorService executorService;
 
     {
         executorService = Executors.newSingleThreadExecutor();
