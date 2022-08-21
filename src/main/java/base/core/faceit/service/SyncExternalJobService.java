@@ -28,13 +28,9 @@ public class SyncExternalJobService implements Callable<Boolean> {
         DataApiResponseDto dataApiResponseDto = null;
         int pageCounter = NUMBERS_OF_PAGES;
 
-        while ((pageCounter-- > 0) && (dataApiResponseDto == null
-                || (dataApiResponseDto.getLinks().getNext() != null))) {
-
-            dataApiResponseDto = httpClient.get(currentUrl,
-                            DataApiResponseDto.class);
+        while ((pageCounter-- > 0) && (dataApiResponseDto == null || (currentUrl != null))) {
+            dataApiResponseDto = httpClient.get(currentUrl, DataApiResponseDto.class);
             currentUrl = dataApiResponseDto.getLinks().getNext();
-
             List<String> externalSlugs = dataApiResponseDto.getData()
                     .stream()
                     .map(JobApiResponseDto::getSlug)
@@ -43,7 +39,7 @@ public class SyncExternalJobService implements Callable<Boolean> {
             externalSlugs.removeAll(internalSlugs);
 
             if (externalSlugs.isEmpty()) {
-                return true;
+                return false;
             }
 
             jobVacancies = dataApiResponseDto.getData()
