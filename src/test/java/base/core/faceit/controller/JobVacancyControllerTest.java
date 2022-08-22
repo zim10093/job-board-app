@@ -12,11 +12,13 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,6 +59,31 @@ class JobVacancyControllerTest {
     @BeforeEach
     void setUp() {
         RestAssuredMockMvc.mockMvc(mockMvc);
+    }
+
+    @Test
+    public void getJobVacancyBySlug_ok() {
+        Mockito.when(jobVacancyService.findBySlug(Mockito.any()))
+                .thenReturn(Optional.of(createJobVacancyWithSlug(SLUG)));
+
+        RestAssuredMockMvc.when()
+                .get("jobs/" + SLUG)
+                .then()
+                .statusCode(200)
+                .body("description", Matchers.equalTo(DESCRIPTION))
+                .body("views", Matchers.equalTo(1));
+    }
+
+    @Test
+    public void getJobVacancyBySlug_notExistingSlug_notOk() {
+        Mockito.when(jobVacancyService.findBySlug(Mockito.any()))
+                .thenReturn(Optional.empty());
+        try {
+            RestAssuredMockMvc.when().get("jobs/" + SLUG);
+        } catch (Exception e) {
+            return;
+        }
+        Assertions.fail();
     }
 
     @Test
