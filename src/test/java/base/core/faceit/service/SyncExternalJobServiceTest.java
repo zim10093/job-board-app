@@ -112,6 +112,7 @@ class SyncExternalJobServiceTest {
         jobVacancy.setLocation(location);
         jobVacancy.setCreatedAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(CREATED_AT),
                 TimeZone.getDefault().toZoneId()));
+        jobVacancy.setViews(1L);
         return jobVacancy;
     }
 }

@@ -4,13 +4,12 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class JobVacancyResponseDto {
+@Setter
+public class JobVacancyShortResponseDto {
     private String slug;
     private String companyName;
     private String title;
-    private String description;
     private boolean remote;
     private String url;
     private List<String> jobTags;

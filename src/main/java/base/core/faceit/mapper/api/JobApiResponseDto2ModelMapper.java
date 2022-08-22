@@ -42,6 +42,7 @@ public class JobApiResponseDto2ModelMapper implements
         jobVacancy.setJobTags(verifyJobTags(dto.getTags()));
         jobVacancy.setJobTypes(verifyJobTypes(dto.getJobTypes()));
         jobVacancy.setLocation(verifyLocation(dto.getLocation()));
+        jobVacancy.setViews(0L);
         return jobVacancy;
     }
 

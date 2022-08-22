@@ -5,6 +5,7 @@ import base.core.faceit.model.Statistic;
 import base.core.faceit.repository.JobVacancyRepository;
 import base.core.faceit.service.JobVacancyService;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -38,5 +39,15 @@ public class JobVacancyServiceImpl implements JobVacancyService {
     @Override
     public List<JobVacancy> findTopByCreatedAt() {
         return jobVacancyRepository.findTopByCreatedAt();
+    }
+
+    @Override
+    public Optional<JobVacancy> findBySlug(String slug) {
+        return jobVacancyRepository.findBySlug(slug);
+    }
+
+    @Override
+    public void incrementViewsBySlug(String slug) {
+        jobVacancyRepository.incrementViewsBySlug(slug);
     }
 }
