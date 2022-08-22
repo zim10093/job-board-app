@@ -60,6 +60,7 @@ class JobVacancyModel2DtoMapperTest {
         jobVacancy.setLocation(location);
         jobVacancy.setCreatedAt(LocalDateTime.ofInstant(Instant.ofEpochMilli(CREATED_AT),
                 TimeZone.getDefault().toZoneId()));
+        jobVacancy.setViews(1L);
     }
 
     @Test
@@ -77,5 +78,6 @@ class JobVacancyModel2DtoMapperTest {
                 jobVacancyResponseDto.getJobTypes()));
         Assertions.assertEquals(LOCATION, jobVacancyResponseDto.getLocation());
         Assertions.assertEquals(CREATED_AT, jobVacancyResponseDto.getCreatedAt());
+        Assertions.assertEquals(1L, jobVacancyResponseDto.getViews());
     }
 }

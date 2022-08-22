@@ -3,7 +3,7 @@ package base.core.faceit.controller;
 import base.core.faceit.mapper.Model2DtoMapper;
 import base.core.faceit.model.JobVacancy;
 import base.core.faceit.model.Statistic;
-import base.core.faceit.model.dto.response.JobVacancyResponseDto;
+import base.core.faceit.model.dto.response.JobVacancyShortResponseDto;
 import base.core.faceit.service.JobVacancyService;
 import base.core.faceit.util.SortUtil;
 import java.util.List;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/jobs")
 @RequiredArgsConstructor
 public class JobVacancyController {
-    private final Model2DtoMapper<JobVacancyResponseDto, JobVacancy> jobVacancyToResponseDtoMapper;
+    private final Model2DtoMapper<JobVacancyShortResponseDto, JobVacancy> modelToDtoShortMapper;
     private final JobVacancyService jobVacancyService;
     private final SortUtil sortUtil;
 
     @GetMapping
-    public List<JobVacancyResponseDto> getAll(
+    public List<JobVacancyShortResponseDto> getAll(
             @RequestParam (defaultValue = "20") Integer count,
             @RequestParam (defaultValue = "0") Integer page,
             @RequestParam (defaultValue = "createdAt") String sortBy) {
@@ -33,7 +33,7 @@ public class JobVacancyController {
         PageRequest pageRequest = PageRequest.of(page, count, sort);
         return jobVacancyService.findAll(pageRequest)
                 .stream()
-                .map(jobVacancyToResponseDtoMapper::toDto)
+                .map(modelToDtoShortMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -43,10 +43,10 @@ public class JobVacancyController {
     }
 
     @GetMapping("/top10")
-    public List<JobVacancyResponseDto> getTopTen() {
+    public List<JobVacancyShortResponseDto> getTopTen() {
         return jobVacancyService.findTopByCreatedAt()
                 .stream()
-                .map(jobVacancyToResponseDtoMapper::toDto)
+                .map(modelToDtoShortMapper::toDto)
                 .collect(Collectors.toList());
     }
 }
