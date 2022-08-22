@@ -38,7 +38,7 @@ public class JobVacancyController {
     }
 
     @GetMapping("/statistic")
-    public List<Statistic> test() {
+    public List<Statistic> getStatistic() {
         return jobVacancyService.getStatisticByLocation();
     }
 
