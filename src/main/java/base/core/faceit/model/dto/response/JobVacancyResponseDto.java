@@ -17,4 +17,5 @@ public class JobVacancyResponseDto {
     private List<String> jobTypes;
     private String location;
     private long createdAt;
+    private long views;
 }

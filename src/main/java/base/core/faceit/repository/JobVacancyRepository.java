@@ -23,7 +23,7 @@ public interface JobVacancyRepository extends JpaRepository<JobVacancy, Long> {
     @Query("SELECT j.slug FROM JobVacancy AS j WHERE j.slug IN :slugs")
     Set<String> findAllSlugIn(@Param("slugs") Iterable<String> slugs);
 
-    @Query(value = "SELECT * FROM job_vacancies ORDER BY created_at DESC LIMIT 10;",
+    @Query(value = "SELECT * FROM job_vacancies ORDER BY views DESC , created_at DESC LIMIT 10;",
             nativeQuery = true)
     List<JobVacancy> findTopByCreatedAt();
 }

@@ -34,6 +34,7 @@ public class JobVacancyModel2DtoMapper implements
                 .collect(Collectors.toList()));
         dto.setLocation(model.getLocation().getName());
         dto.setCreatedAt(getMsFromDateTime(model.getCreatedAt()));
+        dto.setViews(model.getViews());
         return dto;
     }
 

@@ -33,4 +33,5 @@ public class JobVacancy {
     @ManyToOne(fetch = FetchType.LAZY)
     private Location location;
     private LocalDateTime createdAt;
+    private Long views;
 }
