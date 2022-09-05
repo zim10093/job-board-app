@@ -7,7 +7,6 @@ import base.core.faceit.model.JobVacancy;
 import base.core.faceit.model.Location;
 import base.core.faceit.model.Statistic;
 import base.core.faceit.service.JobVacancyService;
-import base.core.faceit.util.Scheduler;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -46,13 +45,9 @@ class JobVacancyControllerTest {
     private static final String JOB_TYPES = "some job type";
     private static final String LOCATION = "some location";
     private static final long CREATED_AT = 1660856656L;
-    //disable sync job for this test
-    @MockBean
-    private Scheduler scheduler;
 
     @MockBean
     private JobVacancyService jobVacancyService;
-
     @Autowired
     private MockMvc mockMvc;
 
