@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JobTypeRepository extends JpaRepository<JobType, Long> {
-
     Set<JobType> findByTitleIn(Iterable<String> names);
-
 }
