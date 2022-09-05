@@ -3,6 +3,7 @@ package base.core.faceit.service.impl;
 import base.core.faceit.model.Location;
 import base.core.faceit.repository.LocationRepository;
 import base.core.faceit.service.LocationService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location findByName(String name) {
+    public Optional<Location> findByName(String name) {
         return locationRepository.findByName(name);
     }
 }

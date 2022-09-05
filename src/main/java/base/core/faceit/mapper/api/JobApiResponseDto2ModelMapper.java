@@ -13,6 +13,7 @@ import base.core.faceit.service.JobTypeService;
 import base.core.faceit.service.LocationService;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
@@ -47,13 +48,13 @@ public class JobApiResponseDto2ModelMapper implements
     }
 
     private Company verifyCompany(String name) {
-        Company company = companyService.findByName(name);
-        if (company == null) {
-            company = new Company();
+        Optional<Company> companyOptional = companyService.findByName(name);
+        if (companyOptional.isEmpty()) {
+            Company company = new Company();
             company.setName(name);
-            companyService.save(company);
+            return companyService.save(company);
         }
-        return company;
+        return companyOptional.get();
     }
 
     private Set<JobTag> verifyJobTags(Set<String> tags) {
@@ -93,12 +94,12 @@ public class JobApiResponseDto2ModelMapper implements
     }
 
     private Location verifyLocation(String name) {
-        Location location = locationService.findByName(name);
-        if (location == null) {
-            location = new Location();
+        Optional<Location> locationOptional = locationService.findByName(name);
+        if (locationOptional.isEmpty()) {
+            Location location = new Location();
             location.setName(name);
-            locationService.save(location);
+            return locationService.save(location);
         }
-        return location;
+        return locationOptional.get();
     }
 }

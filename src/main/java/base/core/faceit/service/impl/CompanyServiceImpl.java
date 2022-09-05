@@ -3,6 +3,7 @@ package base.core.faceit.service.impl;
 import base.core.faceit.model.Company;
 import base.core.faceit.repository.CompanyRepository;
 import base.core.faceit.service.CompanyService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company findByName(String name) {
+    public Optional<Company> findByName(String name) {
         return companyRepository.findByName(name);
     }
 }

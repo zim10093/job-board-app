@@ -13,6 +13,7 @@ import base.core.faceit.service.LocationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
@@ -60,7 +61,7 @@ class JobApiResponseDto2ModelMapperTest {
     @Test
     public void toModel_existingComponents_ok() throws JsonProcessingException {
         Company company = getCompany();
-        Mockito.when(companyService.findByName(COMPANY_NAME)).thenReturn(company);
+        Mockito.when(companyService.findByName(COMPANY_NAME)).thenReturn(Optional.of(company));
 
         JobTag jobTag = getJobTag();
         Mockito.when(jobTagService.finByTitleIn(Set.of(TAGS))).thenReturn(Set.of(jobTag));
@@ -70,7 +71,7 @@ class JobApiResponseDto2ModelMapperTest {
                 .thenReturn(Set.of(jobType));
 
         Location location = getLocation();
-        Mockito.when(locationService.findByName(LOCATION)).thenReturn(location);
+        Mockito.when(locationService.findByName(LOCATION)).thenReturn(Optional.of(location));
 
         String url = String.format(JOB_API_RESPONSE_JSON, SLUG, COMPANY_NAME, TITLE, DESCRIPTION,
                 REMOTE, URL, TAGS, JOB_TYPES, LOCATION, CREATED_AT);
@@ -94,11 +95,13 @@ class JobApiResponseDto2ModelMapperTest {
 
     @Test
     public void toModel_newComponent_ok() throws JsonProcessingException {
-        Mockito.when(companyService.findByName(Mockito.any())).thenReturn(null);
+        Mockito.when(companyService.findByName(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(jobTagService.finByTitleIn(Mockito.any())).thenReturn(Collections.emptySet());
         Mockito.when(jobTypeService.findByTitleIn(Mockito.any()))
                 .thenReturn(Collections.emptySet());
-        Mockito.when(locationService.findByName(Mockito.any())).thenReturn(null);
+        Mockito.when(locationService.findByName(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(companyService.save(Mockito.any())).thenReturn(getCompany());
+        Mockito.when(locationService.save(Mockito.any())).thenReturn(getLocation());
 
         String url = String.format(JOB_API_RESPONSE_JSON, SLUG, COMPANY_NAME, TITLE, DESCRIPTION,
                 REMOTE, URL, TAGS, JOB_TYPES, LOCATION, CREATED_AT);
