@@ -102,7 +102,7 @@ class JobVacancyControllerTest {
 
     @Test
     public void getTopTen_ok() {
-        Mockito.when(jobVacancyService.findTopByCreatedAt())
+        Mockito.when(jobVacancyService.findTopByViews(10))
                 .thenReturn(createListOfJobVacancies(10));
 
         RestAssuredMockMvc.when()

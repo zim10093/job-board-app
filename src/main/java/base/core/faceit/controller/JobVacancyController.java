@@ -51,9 +51,9 @@ public class JobVacancyController {
         return jobVacancyService.getStatisticByLocation();
     }
 
-    @GetMapping("/top10")
-    public List<JobVacancyShortResponseDto> getTopTen() {
-        return jobVacancyService.findTopByCreatedAt()
+    @GetMapping("/top{limit}")
+    public List<JobVacancyShortResponseDto> getTop(@PathVariable int limit) {
+        return jobVacancyService.findTopByViews(limit)
                 .stream()
                 .map(modelToDtoShortMapper::toDto)
                 .collect(Collectors.toList());

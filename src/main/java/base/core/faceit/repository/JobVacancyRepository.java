@@ -34,9 +34,9 @@ public interface JobVacancyRepository extends JpaRepository<JobVacancy, Long> {
 
     @Query(value = "SELECT * FROM job_vacancies "
             + "ORDER BY views DESC , created_at DESC "
-            + "LIMIT 10;",
+            + "LIMIT ?1",
             nativeQuery = true)
-    List<JobVacancy> findTopByCreatedAt();
+    List<JobVacancy> findTopByViews(int limit);
 
     Optional<JobVacancy> findBySlug(String slug);
 
