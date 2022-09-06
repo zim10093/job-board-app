@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler({NoSuchElementException.class, SyncException.class})
     protected ResponseEntity<Object> handleDataProcessingException(Exception ex) {
         Map<String, Object> body = new HashMap<>();
