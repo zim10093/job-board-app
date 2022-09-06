@@ -8,6 +8,7 @@ import base.core.faceit.model.dto.response.JobVacancyShortResponseDto;
 import base.core.faceit.service.JobVacancyService;
 import base.core.faceit.util.SortUtil;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +44,8 @@ public class JobVacancyController {
     @GetMapping("/{slug}")
     public JobVacancyResponseDto getBySlug(@PathVariable String slug) {
         jobVacancyService.incrementViewsBySlug(slug);
-        return modelToDtoMapper.toDto(jobVacancyService.findBySlug(slug).get());
+        return modelToDtoMapper.toDto(jobVacancyService.findBySlug(slug).orElseThrow(() ->
+                new NoSuchElementException("Can`t find job vacancy by slug: " + slug)));
     }
 
     @GetMapping("/statistic")
