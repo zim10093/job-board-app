@@ -7,7 +7,6 @@ import base.core.faceit.model.JobVacancy;
 import base.core.faceit.model.Location;
 import base.core.faceit.model.Statistic;
 import base.core.faceit.service.JobVacancyService;
-import base.core.faceit.util.Scheduler;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -18,7 +17,6 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles(profiles = "test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class JobVacancyControllerTest {
@@ -46,13 +42,9 @@ class JobVacancyControllerTest {
     private static final String JOB_TYPES = "some job type";
     private static final String LOCATION = "some location";
     private static final long CREATED_AT = 1660856656L;
-    //disable sync job for this test
-    @MockBean
-    private Scheduler scheduler;
 
     @MockBean
     private JobVacancyService jobVacancyService;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -78,12 +70,13 @@ class JobVacancyControllerTest {
     public void getJobVacancyBySlug_notExistingSlug_notOk() {
         Mockito.when(jobVacancyService.findBySlug(Mockito.any()))
                 .thenReturn(Optional.empty());
-        try {
-            RestAssuredMockMvc.when().get("jobs/" + SLUG);
-        } catch (Exception e) {
-            return;
-        }
-        Assertions.fail();
+            RestAssuredMockMvc.when()
+                    .get("jobs/" + SLUG)
+                    .then()
+                    .statusCode(500)
+                    .body("status", Matchers.equalTo(500))
+                    .body("message", Matchers.equalTo(
+                            "Can`t find job vacancy by slug: " + SLUG));
     }
 
     @Test
@@ -107,7 +100,7 @@ class JobVacancyControllerTest {
 
     @Test
     public void getTopTen_ok() {
-        Mockito.when(jobVacancyService.findTopByCreatedAt())
+        Mockito.when(jobVacancyService.findTopByViews(10))
                 .thenReturn(createListOfJobVacancies(10));
 
         RestAssuredMockMvc.when()

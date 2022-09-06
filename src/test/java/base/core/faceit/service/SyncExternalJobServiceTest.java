@@ -16,12 +16,14 @@ import java.util.Set;
 import java.util.TimeZone;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class SyncExternalJobServiceTest {
@@ -56,6 +58,14 @@ class SyncExternalJobServiceTest {
     @BeforeAll
     static void beforeAll() {
         objectMapper = new ObjectMapper();
+    }
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(syncExternalJobService, "apiUrl",
+                "https://www.arbeitnow.com/api/job-board-api");
+        ReflectionTestUtils.setField(syncExternalJobService, "sleepTimeMs", 10000);
+        ReflectionTestUtils.setField(syncExternalJobService, "numbersOfPages", 10);
     }
 
     @Test

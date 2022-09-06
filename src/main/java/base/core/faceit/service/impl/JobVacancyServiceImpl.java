@@ -37,8 +37,8 @@ public class JobVacancyServiceImpl implements JobVacancyService {
     }
 
     @Override
-    public List<JobVacancy> findTopByCreatedAt() {
-        return jobVacancyRepository.findTopByCreatedAt();
+    public List<JobVacancy> findTopByViews(int limit) {
+        return jobVacancyRepository.findTopByViews(limit);
     }
 
     @Override

@@ -47,13 +47,11 @@ public class JobApiResponseDto2ModelMapper implements
     }
 
     private Company verifyCompany(String name) {
-        Company company = companyService.findByName(name);
-        if (company == null) {
-            company = new Company();
+        return companyService.findByName(name).orElseGet(() -> {
+            Company company = new Company();
             company.setName(name);
-            companyService.save(company);
-        }
-        return company;
+            return companyService.save(company);
+        });
     }
 
     private Set<JobTag> verifyJobTags(Set<String> tags) {
@@ -93,12 +91,10 @@ public class JobApiResponseDto2ModelMapper implements
     }
 
     private Location verifyLocation(String name) {
-        Location location = locationService.findByName(name);
-        if (location == null) {
-            location = new Location();
+        return locationService.findByName(name).orElseGet(() -> {
+            Location location = new Location();
             location.setName(name);
-            locationService.save(location);
-        }
-        return location;
+            return locationService.save(location);
+        });
     }
 }

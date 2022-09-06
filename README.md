@@ -1,11 +1,14 @@
 # job board api
 ### Description
-This is application where you have more possibility to work with job vacancy than with given api
+This is application where you have more possibility to work with job vacancy than with given api.
+You can get statistics, number of jobs by location, top jobs and work with jobs with pagination and sorting.
+This app synchronize every hour at 25 minutes. Time of sync depends on how much new job exists in external api. 
+Delay between every 100 jobs is 10 sec to avoid heavy load on the external server.
 
 ### Endpoints:
  - `/jobs` returns all job vacancies with pagination and sort
  - `/jobs/statistic` returns numbers of vacancies by location
- - `/jobs/top10` returns top 10 by views last vacancies
+ - `/jobs/top{limit}` returns top job vacancies by views limited by path variable
  - `jobs/{slug}` returns job vacancies with description
 
 #### SortBy parameters:

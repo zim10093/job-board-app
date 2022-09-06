@@ -9,24 +9,28 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class SyncExternalJobService implements Callable<Boolean> {
-    private static final int NUMBERS_OF_PAGES = 10;
-    private static final int SLEEP_TIME_MS = 10000;
-    private static final String API_URL = "https://www.arbeitnow.com/api/job-board-api";
     private final Dto2ModelMapper<JobApiResponseDto, JobVacancy> dtoJobApiToModelMapper;
     private final JobVacancyService jobVacancyService;
     private final HttpClient httpClient;
+    @Value("${external.api.downloadDelay}")
+    private int sleepTimeMs;
+    @Value("${external.api.numberOfPages}")
+    private int numbersOfPages;
+    @Value("${external.api.url}")
+    private String apiUrl;
 
     @Override
     public Boolean call() throws Exception {
-        String currentUrl = API_URL;
+        String currentUrl = apiUrl;
         List<JobVacancy> jobVacancies;
         DataApiResponseDto dataApiResponseDto = null;
-        int pageCounter = NUMBERS_OF_PAGES;
+        int pageCounter = numbersOfPages;
 
         while ((pageCounter-- > 0) && (dataApiResponseDto == null || (currentUrl != null))) {
             dataApiResponseDto = httpClient.get(currentUrl, DataApiResponseDto.class);
@@ -48,7 +52,7 @@ public class SyncExternalJobService implements Callable<Boolean> {
                     .map(dtoJobApiToModelMapper::toModel)
                     .collect(Collectors.toList());
             jobVacancyService.saveAll(jobVacancies);
-            Thread.sleep(SLEEP_TIME_MS);
+            Thread.sleep(sleepTimeMs);
         }
         return true;
     }
