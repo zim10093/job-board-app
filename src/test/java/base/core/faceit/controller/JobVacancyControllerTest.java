@@ -17,7 +17,6 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,12 +70,13 @@ class JobVacancyControllerTest {
     public void getJobVacancyBySlug_notExistingSlug_notOk() {
         Mockito.when(jobVacancyService.findBySlug(Mockito.any()))
                 .thenReturn(Optional.empty());
-        try {
-            RestAssuredMockMvc.when().get("jobs/" + SLUG);
-        } catch (Exception e) {
-            return;
-        }
-        Assertions.fail();
+            RestAssuredMockMvc.when()
+                    .get("jobs/" + SLUG)
+                    .then()
+                    .statusCode(500)
+                    .body("status", Matchers.equalTo(500))
+                    .body("message", Matchers.equalTo(
+                            "Can`t find job vacancy by slug: " + SLUG));
     }
 
     @Test
