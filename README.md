@@ -1,9 +1,6 @@
-# job board api
+# job board app
 ### Description
-This is application where you have more possibility to work with job vacancy than with given api.
-You can get statistics, number of jobs by location, top jobs and work with jobs with pagination and sorting.
-This app synchronize every hour at 25 minutes. Time of sync depends on how much new job exists in external api. 
-Delay between every 100 jobs is 10 sec to avoid heavy load on the external server.
+This is an application where you have more possibility to work with job vacancies than with a given API. You can get statistics, a number of jobs by location, top jobs and work with jobs with pagination and sorting. This app synchronizes every hour at 25 minutes. The time of sync depends on how many new jobs exist in the external API. The delay between every 100 jobs is 10 sec to avoid a heavy load on the external server.
 
 ### Endpoints:
  - `/jobs` returns all job vacancies with pagination and sort
